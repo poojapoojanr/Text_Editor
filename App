@@ -1,0 +1,77 @@
+//import action.Action;
+import notepad.Notepad;
+import java.util.Scanner;
+
+import java.time.LocalDateTime;
+class App {
+    public static void main(String[] args) throws Exception {
+//        Action action = new Action(101,LocalDateTime.now(),true,5,"I am Pooja");
+//
+//        action.setDateTime(LocalDateTime.now());
+//        action.setIsaddition(false);
+//        action.setLineno(10);
+//        action.setText("Java Project-Text Editor");
+//        action.setactionId(30);
+//
+//        System.out.println("Action:" + action.getText());
+//        System.out.println("ActionId:" + action.getActionId());
+//        System.out.println("lineNo:" + action.getLineNo());
+//        System.out.println("DateandTime:" + action.getLocalDateTime());
+//        System.out.println("isaddition:" + action.getisAddiotion());
+
+        Scanner sc=new Scanner(System.in);
+        Notepad notepad=new Notepad(100);
+        do{
+            System.out.println("enter your choice");
+            System.out.println("1:display the context\n 2:display the text from given lines\n 3: insert the text \n 4: delete from given line\n 5: delete the text fron startline to endline \n 6: copy the text\n 7: paste the text \n 8: undo \n 9: redo \n10:exit");
+             int choice = sc.nextInt();
+
+             switch (choice){
+                 case 1:notepad.display(); break;
+                 case 2:
+                     System.out.println("enter the startline and endline");
+                     int startline=sc.nextInt();
+                     int endline=sc.nextInt();
+                     notepad.display(startline,endline);
+                     break;
+                 case 3:
+                     System.out.println("enter the line number");
+                     int lineNo=sc.nextInt();
+                     System.out.println("enter the text");
+                     String text=sc.next();
+                     notepad.insertLine(lineNo,text);
+                     break;
+                 case 4:
+                     System.out.println("enter the line number");
+                     int lineno=sc.nextInt();
+                     notepad.delete(lineno);
+                     notepad.display();
+                     break;
+                 case 5:
+                     System.out.println("enter the startline and endline");
+                     int start=sc.nextInt();
+                     int end=sc.nextInt();
+                     notepad.delete(start,end);
+                     break;
+                 case 6:
+                     System.out.println("enter the startline and endline");
+                     int starts=sc.nextInt();
+                     int ends=sc.nextInt();
+                     notepad.copy(starts,ends);
+                     break;
+                 case 7:
+                     System.out.println("enter the line number");
+                     int linenumber=sc.nextInt();
+                     notepad.paste(linenumber);
+                     break;
+                 case 8:notepad.undo();
+                      break;
+                 case 9:notepad.redo();
+                     break;
+                 case 10: break;
+             }
+        }while (true);
+
+    }
+}
+
