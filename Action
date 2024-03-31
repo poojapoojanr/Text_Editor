@@ -1,0 +1,48 @@
+package action;
+import java.time.*;
+public class Action {
+    private int actionId;
+    private LocalDateTime localDateTime;
+    private boolean isAddition;
+    private int lineNo;
+    private  String text;
+     public int getActionId(){
+         return this.actionId;
+     }
+     public  void setactionId(int actionId){
+         this.actionId=actionId;
+     }
+
+     public  Action (int actionId,LocalDateTime localDateTime,boolean isAddition,int lineNo,String text){
+         this.actionId=actionId;
+         this.localDateTime=localDateTime;
+         this.isAddition=isAddition;
+         this.lineNo=lineNo;
+         this.text=text;
+     }
+
+     public  LocalDateTime getLocalDateTime(){
+         return  this.localDateTime;
+     }
+     public  void setDateTime(LocalDateTime localDateTime){
+         this.localDateTime=localDateTime;
+     }
+     public  boolean getisAddiotion(){
+         return this.isAddition;
+     }
+     public  void setIsaddition(boolean isAddition){
+         this.isAddition=isAddition;
+     }
+     public  int getLineNo(){
+         return   this.lineNo;
+     }
+     public  void setLineno(int lineNo){
+         this.lineNo=lineNo;
+     }
+     public  String getText(){
+         return  this.text;
+     }
+     public void setText(String text){
+         this.text=text;
+     }
+}
