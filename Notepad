@@ -1,0 +1,168 @@
+package notepad;
+import action.Action;
+
+import java.time.LocalDateTime;
+import java.util.*;
+public class Notepad {
+    private int Id;
+    private String notepad[];
+    private Stack<Action> undoaction;
+    private Stack<Action> redoaction;
+    private Queue<String> clipboard;    //to copy and paste the text
+    private int capacity;     // total lines available in the text
+
+    public Notepad(int capacity) {
+        notepad = new String[capacity];
+
+        for (int i = 0; i < capacity; i++) {
+            notepad[i] = "";
+        }
+
+        undoaction = new Stack<>();
+        redoaction = new Stack<>();
+        clipboard = new LinkedList<>();
+        this.capacity = capacity;
+    }
+
+
+
+
+
+// to display all the content in notepad
+    public void display() {
+        for (int i = 0; i < this.capacity; i++) {
+            System.out.println(notepad[i]);
+        }
+    }
+
+
+
+
+
+
+
+// to display the content which is between startline and endline
+    public void display(int startingLine, int endingLine) {
+        if (startingLine < 0 || startingLine > endingLine || endingLine > this.capacity) {
+            System.out.println("Unable to display,please check the input");
+            return;
+        }
+        for (int i = startingLine - 1; i < endingLine; i++) {
+            System.out.println(notepad[i]);
+        }
+    }
+
+
+
+
+
+
+
+    // to insert the text at particular line
+    public void insertLine(int lineNo, String text) {
+        if (lineNo > capacity) {
+            System.out.println("Notepad limit crossed");
+            return;
+        }
+        notepad[lineNo - 1] = text;
+        undoaction.push(new Action(Id++, LocalDateTime.now(), true, lineNo, text));
+    }
+
+
+
+
+
+
+
+
+// to delete the text from particular line number
+    public void delete(int lineNo) {
+        if (lineNo > capacity) {
+            System.out.println("No such row to delete");
+            return;
+        }
+        if (notepad[lineNo - 1].isEmpty()) {
+            System.out.println("Nothing to delete");
+            return;
+        }
+        redoaction.push(new Action(Id++, LocalDateTime.now(), false, lineNo, notepad[lineNo - 1]));
+
+        notepad[lineNo - 1] = "";
+    }
+
+
+
+
+    //to delete the whole text from startline to endline
+    public void delete(int startingLine, int endingLine) {
+        if (startingLine > endingLine || endingLine > capacity) {
+            System.out.println("unable to delete,please check the inputs");
+            return;
+        }
+        for (int i = startingLine; i < endingLine; i++) {
+            delete(i);
+        }
+    }
+
+
+
+
+
+
+  //Copy
+    public void copy(int startline, int endline) {
+        if (startline > endline || endline > capacity) {
+            System.out.println("Unable to copy");
+            return;
+        }
+        String copytext = "";     // initialize
+        for (int i = startline - 1; i < endline; i++) {
+            copytext = copytext + (notepad[i] + "\n");     //for multiple lines give \n
+        }
+        if (!copytext.isEmpty())
+            clipboard.add(copytext);       // copied text is added to clipboard
+
+    }
+
+
+
+
+//Paste
+    public void paste(int lineNo) {
+        if (this.clipboard.isEmpty()) {
+            System.out.println("Nothing to paste");
+            return;
+        }
+        String text = clipboard.peek();  // check peek text
+        insertLine(lineNo, text);    // insert to mentioned lineno
+    }
+
+
+    // undo-whatever latest u done just remove that
+    public void undo(){
+        if(this.undoaction.isEmpty()){
+            System.out.println("nothing to undo");
+            return;
+        }
+        Action action=this.undoaction.peek();   // check the peep text
+        this.undoaction.pop();                 // pop out that from undo action stack
+        delete(action.getLineNo());            //delete that line
+    }
+
+
+
+
+
+//redo - take peek action , pop , insert
+public  void redo(){
+        if(this.redoaction.isEmpty()){
+            System.out.println("nothing to redo");
+            return;
+        }
+       Action action=redoaction.peek();
+        this.redoaction.pop();          // pop from redo action stack
+        insertLine(action.getLineNo(),action.getText());
+}
+
+
+}
